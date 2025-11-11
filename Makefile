@@ -1,4 +1,11 @@
-for-linux-env:
+artisan:
+	docker compose exec app php artisan $(filter-out $@,$(MAKECMDGOALS))
+%:
+	@:
+copy-env:
+	cp .env.example .env
+copy-env-linux:
+	@make copy-env
 	echo "UID=$$(id -u)" >> .env
 	echo "GID=$$(id -g)" >> .env
 install:
@@ -43,37 +50,37 @@ web:
 	docker compose exec web bash
 app:
 	docker compose exec app bash
-tinker:
-	docker compose exec app php artisan tinker
-dump:
-	docker compose exec app php artisan dump-server
-test:
-	docker compose exec app php artisan test
-migrate:
-	docker compose exec app php artisan migrate
-fresh:
-	docker compose exec app php artisan migrate:fresh --seed
-seed:
-	docker compose exec app php artisan db:seed
-dacapo:
-	docker compose exec app php artisan dacapo
-rollback-test:
-	docker compose exec app php artisan migrate:fresh
-	docker compose exec app php artisan migrate:refresh
-optimize:
-	docker compose exec app php artisan optimize
-optimize-clear:
-	docker compose exec app php artisan optimize:clear
-cache:
-	docker compose exec app composer dump-autoload --optimize
-	@make optimize
-	docker compose exec app php artisan event:cache
-	docker compose exec app php artisan view:cache
-cache-clear:
-	docker compose exec app composer clear-cache
-	@make optimize-clear
-	docker compose exec app php artisan event:clear
-	docker compose exec app php artisan view:clear
+# tinker:
+# 	docker compose exec app php artisan tinker
+# dump:
+# 	docker compose exec app php artisan dump-server
+# test:
+# 	docker compose exec app php artisan test
+# migrate:
+# 	docker compose exec app php artisan migrate
+# fresh:
+# 	docker compose exec app php artisan migrate:fresh --seed
+# seed:
+# 	docker compose exec app php artisan db:seed
+# dacapo:
+# 	docker compose exec app php artisan dacapo
+# rollback-test:
+# 	docker compose exec app php artisan migrate:fresh
+# 	docker compose exec app php artisan migrate:refresh
+# optimize:
+# 	docker compose exec app php artisan optimize
+# optimize-clear:
+# 	docker compose exec app php artisan optimize:clear
+# cache:
+# 	docker compose exec app composer dump-autoload --optimize
+# 	@make optimize
+# 	docker compose exec app php artisan event:cache
+# 	docker compose exec app php artisan view:cache
+# cache-clear:
+# 	docker compose exec app composer clear-cache
+# 	@make optimize-clear
+# 	docker compose exec app php artisan event:clear
+# 	docker compose exec app php artisan view:clear
 db:
 	docker compose exec db bash
 sql:
